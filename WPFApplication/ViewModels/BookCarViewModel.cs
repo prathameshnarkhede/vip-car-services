@@ -14,11 +14,16 @@ namespace WPFApplication.ViewModels
 
         public BookCarViewModel()
         {
+            InitializeData();
+            SelectPackageCommand = new RelayCommand(SelectPackage);
+            UpdateCostCommand = new RelayCommand(CalculateCost);
+        }
+
+        public void InitializeData()
+        {
             var dbMgr = new DatabaseManager();
             Cars = new ObservableCollection<Car>(DataApplication.Calculations.Infrastructure.GetAvailableCars());
             Locations = new ObservableCollection<Location>(dbMgr.GetLocations());
-            SelectPackageCommand = new RelayCommand(SelectPackage);
-            UpdateCostCommand = new RelayCommand(CalculateCost);
         }
 
         private void CalculateCost(object obj)
@@ -31,32 +36,28 @@ namespace WPFApplication.ViewModels
             Booking.Type = obj as string;
         }
 
-        private double _amount = 0.0;
-
         public double Amount
         {
             get
             {
-                return _amount;
+                return Booking.Price;
             }
             set
             {
-                _amount = value;
+                Booking.Price = value;
                 RaisePropertyChanged(nameof(Amount));
             }
         }
-
-        private double _totalAmountWithTax = 0.0;
 
         public double TotalAmountWithTax
         {
             get
             {
-                return _totalAmountWithTax;
+                return Booking.PriceWithTax;
             }
             set
             {
-                _totalAmountWithTax = value;
+                Booking.PriceWithTax = value;
                 RaisePropertyChanged(nameof(TotalAmountWithTax));
             }
         }
@@ -91,7 +92,7 @@ namespace WPFApplication.ViewModels
             }
         }
 
-        private Booking _booking = new Booking { Hours = 0, Time = DateTime.Now, Type = "Hourly" };
+        private Booking _booking = new Booking { Hours = 0, Time = DateTime.Now, Type = "Hourly", Price = 0, PriceWithTax = 0 };
 
         public Booking Booking
         {

@@ -76,11 +76,12 @@ namespace DataApplication.Database
             return result;
         }
 
-        public bool UpdateCustomerBookingCount(Booking booking)
+        public bool UpdateCustomerBookingCount(int customerId)
         {
             var result = false;
+            var bookings = GetCustomerBookings(customerId);
             _connection.Open();
-            var query = "UPDATE table_name SET field1 = new-value1, field2 = new-value2";
+            var query = $"UPDATE {_customerTableName} SET BookingCount = {bookings.Count()} WHERE CustomerId = {customerId}";
             try
             {
                 using (var command = new MySqlCommand(query, _connection))
@@ -453,7 +454,7 @@ namespace DataApplication.Database
             IList<Booking> items = null;
             int count = 0;
             _connection.Open();
-            var query = $"SELECT * FROM `{_bookingTableName}` where CustId = {customerId} and YEAR(Time) = {year}";
+            var query = $"SELECT * FROM `{_bookingTableName}` where CustId = {customerId} and YEAR(Time) = ({year})";
             try
             {
                 using (var command = new MySqlCommand(query, _connection))

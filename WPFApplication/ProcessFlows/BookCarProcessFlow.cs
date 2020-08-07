@@ -15,12 +15,13 @@ namespace WPFApplication.ProcessFlows
    public class BookCarProcessFlow
     {
         private readonly Customer _customer;
+        private BookCarWindow window;
 
         public BookCarProcessFlow(Customer customer)
         {
             this._customer = customer;
 
-            var window = new BookCarWindow();
+            window = new BookCarWindow();
             var vm = (BookCarViewModel)window.DataContext;
             vm.PropertyChanged += Vm_PropertyChanged;
             window.ShowDialog();
@@ -39,7 +40,9 @@ namespace WPFApplication.ProcessFlows
                 if (result)
                 {
                     MessageBox.Show("Car booked Successfully.", "Success");
-
+                    dbMgr.UpdateCustomerBookingCount(_customer.CustomerId);
+                    vm.InitializeData();
+                    window.Close();
                 }
             }
             if (e.PropertyName.Equals(nameof(BookCarViewModel.UpdateCostCommand)))

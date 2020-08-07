@@ -32,38 +32,38 @@ namespace DataApplication.Calculations
                     {
                         if (Enumerable.Range(2, 6).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (5/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (5/ 100.0 * updatedPrice);
                         }
                         else if (Enumerable.Range(7, 14).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (7.5/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (7.5/ 100.0 * updatedPrice);
                         }
                         else if (reservationCount >= 15)
                         {
-                            updatedPrice = booking.Price - (10/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (10/ 100.0 * updatedPrice);
                         }
                     }
                     else
                     {
                         if (Enumerable.Range(5, 9).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (5/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (5/ 100.0 * updatedPrice);
                         }
                         else if (Enumerable.Range(10, 14).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (10/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (10/ 100.0 * updatedPrice);
                         }
                         else if (Enumerable.Range(15, 19).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (12.5/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (12.5/ 100.0 * updatedPrice);
                         }
                         else if (Enumerable.Range(20, 24).Contains(reservationCount))
                         {
-                            updatedPrice = booking.Price - (15/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (15/ 100.0 * updatedPrice);
                         }
                         else if (reservationCount >= 25)
                         {
-                            updatedPrice = booking.Price - (25/ 100.0 * booking.Price);
+                            updatedPrice = updatedPrice - (25/ 100.0 * updatedPrice);
                         }
                     }
                 }
@@ -144,7 +144,7 @@ namespace DataApplication.Calculations
                 allCarsBookings.Add(carId);
                 if (res >= 0)
                 {
-                    Car car = dbMgr.GetCar(carId);
+                    var car = dbMgr.GetCar(carId);
                     carList.Add(car);
                 }
             }

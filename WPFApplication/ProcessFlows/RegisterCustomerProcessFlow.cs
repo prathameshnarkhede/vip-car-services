@@ -10,9 +10,10 @@ namespace WPFApplication.ProcessFlows
 {
     public class RegisterCustomerProcessFlow
     {
+        private RegisterCustomerWindow window;
         public RegisterCustomerProcessFlow()
         {
-            var window = new RegisterCustomerWindow();
+            window = new RegisterCustomerWindow();
             var vm = (RegisterCustomerViewModel)window.DataContext;
             vm.PropertyChanged += Vm_PropertyChanged;
             window.ShowDialog();
@@ -28,6 +29,7 @@ namespace WPFApplication.ProcessFlows
                 if (result)
                 {
                     MessageBox.Show("Customer Added Successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    window.Close();
                 } 
             }
         }
