@@ -22,12 +22,12 @@ namespace WPFApplication.ProcessFlows
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals(nameof(ShowBookingViewModel.SelectedCar)))
-            {
-                var dbMgr = new DatabaseManager();
-                var bookings = dbMgr.GetCarBookings((sender as ShowBookingViewModel).SelectedCar);
-                (sender as ShowBookingViewModel).Bookings = bookings;
-            }
+            //if (e.PropertyName.Equals(nameof(ShowBookingViewModel.SelectedCar)))
+            //{
+            //    var dbMgr = new DatabaseManager();
+            //    var bookings = dbMgr.GetCarBookings((sender as ShowBookingViewModel).SelectedCar);
+            //    (sender as ShowBookingViewModel).Bookings = bookings;
+            //}
         }
     }
 }

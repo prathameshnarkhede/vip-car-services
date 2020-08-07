@@ -84,5 +84,36 @@ namespace DataApplication.Calculations
             List<Car> carList = dbMgr.GetUniqueBookingsForCars();
             return carList;
         }
+
+        public static double CalculateHourlyCost(DateTime startTime, int hours, int carId)
+        {
+            double price = 0.0;
+            var dbMgr = new DatabaseManager();
+            Car car = dbMgr.GetCarUsingCarId(carId);
+            var hourlyCostOfCar = car.HourRate;
+            var endTime = startTime.AddHours(hours);
+            
+            while(DateTime.Compare(startTime,endTime) != 0)
+            {
+                if(startTime.Hour == 22 || startTime.Hour == 23 || startTime.Hour == 0 || startTime.Hour == 1 || 
+                    startTime.Hour == 2 || startTime.Hour == 3 || startTime.Hour == 4 || startTime.Hour == 5 || 
+                    startTime.Hour == 6 || (startTime.Hour == 7 && startTime.Minute == 0))
+                {
+                    price = price + (140 / 100 * hourlyCostOfCar);
+                }
+                else
+                {
+                    if (price == 0.0)
+                        price = price + hourlyCostOfCar;
+                    else
+                        price = price + (65 / 100 * hourlyCostOfCar);
+                }
+
+                startTime.AddHours(1);
+            }
+
+            return price;
+        }
+
     }
 }

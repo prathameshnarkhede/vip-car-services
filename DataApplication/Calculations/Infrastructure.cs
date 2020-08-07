@@ -42,10 +42,10 @@ namespace DataApplication.Calculations
             if (customerType != -1)
             {
                 var customerTypeName = dbMgr.GetCustomerTypeName(customerType);
-                if (customerTypeName == "VIP" || customerTypeName == "Planner")
+                if (customerTypeName.ToLower() == "vip" || customerTypeName.ToLower() == "planner")
                 {
                     int reservationCount = dbMgr.GetCustomerBookingsCountWithinYear(customerId);
-                    if (customerTypeName == "VIP")
+                    if (customerTypeName.ToLower() == "vip")
                     {
                         if (reservationCount >= 2 && reservationCount <= 6)
                         {
