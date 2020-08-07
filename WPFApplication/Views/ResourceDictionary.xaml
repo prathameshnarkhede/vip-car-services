@@ -13,7 +13,9 @@
     <Style x:Key="ComboBoxStyle"
            TargetType="ComboBox">
         <Setter Property="Margin"
-                Value="10" />
+                Value="10 5" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
     </Style>
     <Style x:Key="TextBlockStyle"
            TargetType="TextBlock">

@@ -19,7 +19,7 @@ namespace DataApplication.Calculations
 
             var groupedBookings = bookings.GroupBy(booking => booking.CarId);
 
-            bookings.s
+            return cars;
         }
     }
 }

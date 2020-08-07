@@ -30,6 +30,7 @@ namespace WPFApplication
             if (e.PropertyName.Equals(nameof(MainWindowViewModel.RegisterCustomerCommand)))
             {
                 new RegisterCustomerProcessFlow();
+                (sender as MainWindowViewModel).InitializeData();
             }
 
             if (e.PropertyName.Equals(nameof(MainWindowViewModel.BookCarCommand)))
