@@ -536,7 +536,7 @@ namespace DataApplication.Database
         {
             IEnumerable<Booking> items = null;
             _connection.Open();
-            var query = $"SELECT * FROM `{_bookingTableName}` order by Time desc where CarId={carId}";
+            var query = $"SELECT * FROM `{_bookingTableName}` WHERE CarId={carId} ORDER BY Time desc";
             try
             {
                 using (var command = new MySqlCommand(query, _connection))

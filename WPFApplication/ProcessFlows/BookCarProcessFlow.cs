@@ -35,6 +35,9 @@ namespace WPFApplication.ProcessFlows
             {
                 vm.Booking.CustId = _customer.CustomerId;
 
+                var isValid = ValidateBookingData(vm.Booking);
+                if (!isValid)
+                    return;
                 var result = await BookCar(vm.Booking);
 
                 if (result)
@@ -53,6 +56,22 @@ namespace WPFApplication.ProcessFlows
 
                 vm.TotalAmountWithTax = Infrastructure.CalculateWithTax(vm.Amount);
             }
+        }
+
+        private bool ValidateBookingData(Booking booking)
+        {
+            if(!Infrastructure.CheckCarAvailability(booking.CarId, booking.Time))
+            {
+                MessageBox.Show("Selected car is Not available for selected time");
+                return false;
+            }
+            if(!Infrastructure.IsInArrangement(booking))
+            {
+                MessageBox.Show("Selcted arrangement is not available to start in selected time");
+                return false;
+            }
+            Infrastructure.PopulateTimings(booking);
+            return true;
         }
 
         private async Task<bool> BookCar(Booking booking)

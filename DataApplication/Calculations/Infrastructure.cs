@@ -6,10 +6,16 @@ using System.Linq;
 
 namespace DataApplication.Calculations
 {
-    public class Infrastructure
+    public static class Infrastructure
     {
         private const double _taxPercent = 6;
         private const double hourlyDiscountPercent = 65;
+
+        public static bool IsBetween<T>(this T item, T start, T end)
+        {
+            return Comparer<T>.Default.Compare(item, start) >= 0
+                && Comparer<T>.Default.Compare(item, end) <= 0;
+        }
 
         public static double CalculateWithTax(double basePrice)
         {
@@ -30,11 +36,11 @@ namespace DataApplication.Calculations
                     int reservationCount = dbMgr.GetCustomerBookingsCountWithinYear(customerId);
                     if (customerTypeName.ToLower() == "VIP".ToLower())
                     {
-                        if (Enumerable.Range(2, 6).Contains(reservationCount))
+                        if (reservationCount.IsBetween(2, 6))
                         {
                             updatedPrice = updatedPrice - (5/ 100.0 * updatedPrice);
                         }
-                        else if (Enumerable.Range(7, 14).Contains(reservationCount))
+                        else if (reservationCount.IsBetween(7, 14))
                         {
                             updatedPrice = updatedPrice - (7.5/ 100.0 * updatedPrice);
                         }
@@ -45,19 +51,19 @@ namespace DataApplication.Calculations
                     }
                     else
                     {
-                        if (Enumerable.Range(5, 9).Contains(reservationCount))
+                        if (reservationCount.IsBetween(5, 9))
                         {
                             updatedPrice = updatedPrice - (5/ 100.0 * updatedPrice);
                         }
-                        else if (Enumerable.Range(10, 14).Contains(reservationCount))
+                        else if (reservationCount.IsBetween(10, 14))
                         {
                             updatedPrice = updatedPrice - (10/ 100.0 * updatedPrice);
                         }
-                        else if (Enumerable.Range(15, 19).Contains(reservationCount))
+                        else if (reservationCount.IsBetween(15, 19))
                         {
                             updatedPrice = updatedPrice - (12.5/ 100.0 * updatedPrice);
                         }
-                        else if (Enumerable.Range(20, 24).Contains(reservationCount))
+                        else if (reservationCount.IsBetween(20, 24))
                         {
                             updatedPrice = updatedPrice - (15/ 100.0 * updatedPrice);
                         }
@@ -144,6 +150,40 @@ namespace DataApplication.Calculations
             }
 
             return isAvailable;
+        }
+
+        public static Booking PopulateTimings(Booking booking)
+        {
+            if (booking.Type.ToLower() == "Nightlife".ToLower())
+            {
+                booking.Hours = 7;
+            }
+            if (booking.Type.ToLower() == "Wedding".ToLower())
+            {
+                booking.Hours = 7;
+            }
+            if (booking.Type.ToLower() == "Wellness".ToLower())
+            {
+                booking.Hours = 10;
+            }
+            return booking;
+        }
+
+        public static bool IsInArrangement(Booking booking)
+        {
+            if (booking.Type.ToLower() == "Nightlife".ToLower())
+            {
+                return booking.Time.Hour.IsBetween(20, 24);
+            }
+            if (booking.Type.ToLower() == "Wedding".ToLower())
+            {
+                return booking.Time.Hour.IsBetween(7, 15);
+            }
+            if (booking.Type.ToLower() == "Wellness".ToLower())
+            {
+                return booking.Time.Hour.IsBetween(7, 12);
+            }
+            return true;
         }
     }
 }
