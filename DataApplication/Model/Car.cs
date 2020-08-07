@@ -12,7 +12,7 @@ namespace DataApplication.Model
 
         public int HourRate { get; set; }
 
-        public int NightLifeRate { get; set; }
+        public int NightlifeRate { get; set; }
 
         public int WeddingRate { get; set; }
 

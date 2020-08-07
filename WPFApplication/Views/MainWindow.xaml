@@ -29,7 +29,8 @@
                        HorizontalAlignment="Center" />
             <ComboBox Grid.Column="1"
                       ItemsSource="{Binding Customers}"
-                      DisplayMemberPath="Name" />
+                      DisplayMemberPath="Name"
+                      SelectedValue="{Binding SelectedCustomer}"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

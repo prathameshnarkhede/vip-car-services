@@ -8,7 +8,7 @@ namespace DataApplication.Model
 
         public string Name { get; set; }
 
-        public string Category { get; set; }
+        public int Category { get; set; }
 
         public string Address { get; set; }
 

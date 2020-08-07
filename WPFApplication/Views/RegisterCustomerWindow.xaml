@@ -4,9 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFApplication.Views"
+        xmlns:vm="clr-namespace:WPFApplication.ViewModels"
         mc:Ignorable="d"
-        Title="RegisterCustomerWindow" Height="450" Width="800">
-    <Grid>
+        Title="RegisterCustomerWindow" Height="400" Width="400">
+    <Window.DataContext>
+        <vm:RegisterCustomerViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="10">
+        <TextBlock Text="Register Customer"
+                   FontSize="18"
+                   FontWeight="DemiBold"
+                   Margin="15" />
+        <TextBlock Text="Name" />
+        <TextBox Style="{StaticResource TextBoxStyle}"
+                 Text="{Binding Customer.Name}" />
+        <TextBlock Text="Category" />
+        <ComboBox Style="{StaticResource ComboBoxStyle}"
+                  ItemsSource="{Binding CustomerTypes}"
+                  DisplayMemberPath="CustomerTypeName"
+                  SelectedValuePath="CustomerTypeId"
+                  SelectedValue="{Binding Customer.Category}" />
+        <TextBlock Text="Address" />
+        <TextBox Style="{StaticResource TextBoxStyle}"
+                 Text="{Binding Customer.Address}" />
+        <TextBlock Text="TVAnummer" />
+        <TextBox Style="{StaticResource TextBoxStyle}"
+                 Text="{Binding Customer.TVAnummer}" />
         
-    </Grid>
+        <Button Content="Submit"
+                Margin="25" 
+                Command="{Binding SubmitCommand}"/>
+    </StackPanel>
 </Window>

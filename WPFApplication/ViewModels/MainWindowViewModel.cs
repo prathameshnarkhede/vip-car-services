@@ -24,21 +24,21 @@ namespace WPFApplication.ViewModels
 
         private void RegisterCustomer(object obj)
         {
-            new Views.RegisterCustomerWindow().ShowDialog();
+            RaisePropertyChanged(nameof(RegisterCustomerCommand));
         }
 
         public ICommand BookCarCommand { get; set; }
 
         private void BookCar(object obj)
         {
-            new Views.BookCarWindow().ShowDialog();
+            RaisePropertyChanged(nameof(BookCarCommand));
         }
 
         public ICommand ShowBookingsCommand { get; set; }
 
         private void ShowBooking(object obj)
         {
-            new Views.ShowBookingWindow().ShowDialog();
+            RaisePropertyChanged(nameof(ShowBookingsCommand));
         }
 
         private ObservableCollection<Customer> _customers;
@@ -54,6 +54,22 @@ namespace WPFApplication.ViewModels
                 RaisePropertyChanged(nameof(Customers));
             }
         }
+
+        private Customer _selectedCustomer;
+
+        public Customer SelectedCustomer
+        {
+            get
+            {
+                return _selectedCustomer;
+            }
+            set
+            {
+                _selectedCustomer = value;
+                RaisePropertyChanged(nameof(SelectedCustomer));
+            }
+        }
+
 
         public override void Submit(object obj)
         {

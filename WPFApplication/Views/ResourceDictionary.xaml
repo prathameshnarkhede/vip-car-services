@@ -5,6 +5,10 @@
            TargetType="TextBox">
         <Setter Property="Margin"
                 Value="10" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
     </Style>
     <Style x:Key="ComboBoxStyle"
            TargetType="ComboBox">
@@ -17,5 +21,9 @@
                 Value="10" />
         <Setter Property="FontSize"
                 Value="16" />
+    </Style>
+    <Style TargetType="RadioButton">
+        <Setter Property="Margin"
+                Value="15" />
     </Style>
 </ResourceDictionary>

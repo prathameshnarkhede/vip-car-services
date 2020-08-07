@@ -14,6 +14,7 @@ namespace DataApplication.Database
         private const string _bookingTableName = "booking";
         private const string _carTableName = "car";
         private const string _locationTableName = "location";
+        private const string _customerTypeTableName = "customertype";
 
 
 
@@ -61,6 +62,57 @@ namespace DataApplication.Database
                 {
                     var rowsAffected = command.ExecuteNonQuery();
                     result = rowsAffected != 0; 
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return result;
+        }
+
+        public IEnumerable<CustomerType> GetCustomerTypes()
+        {
+            IList<CustomerType> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_customerTypeTableName}`";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<CustomerType>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items;
+        }
+
+        public bool AddCustomerType(CustomerType customer)
+        {
+            var result = false;
+            _connection.Open();
+            var query = Extensions.GenerateInsertQuery(customer, _customerTypeTableName);
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var rowsAffected = command.ExecuteNonQuery();
+                    result = rowsAffected != 0;
                 }
             }
             catch (MySqlException)

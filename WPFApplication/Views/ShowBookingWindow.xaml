@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFApplication.Views"
+        xmlns:vm="clr-namespace:WPFApplication.ViewModels"
         mc:Ignorable="d"
         Title="AddCarWindow"
         Height="450"
         Width="400">
+    <Window.DataContext>
+        <vm:ShowBookingViewModel />
+    </Window.DataContext>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />

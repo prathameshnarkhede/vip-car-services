@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFApplication.Views"
         xmlns:vm="clr-namespace:WPFApplication.ViewModels"
+        xmlns:window="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         Title="BookCarWindow"
-        Height="500"
+        Height="550"
         Width="400">
     <Window.DataContext>
         <vm:BookCarViewModel />
@@ -19,34 +21,92 @@
                    Margin="15" />
         <TextBlock Text="Select a Car" />
         <ComboBox Style="{StaticResource ComboBoxStyle}"
-                  ItemsSource="{Binding}"/>
+                  SelectedIndex="0"
+                  ItemsSource="{Binding Cars}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="CarId"
+                  SelectedValue="{Binding Booking.CarId}" />
         <TextBlock Text="Select your Starting Location" />
         <ComboBox Style="{StaticResource ComboBoxStyle}"
-                  ItemsSource="{Binding}" />
+                  SelectedIndex="0"
+                  ItemsSource="{Binding Locations}"
+                  DisplayMemberPath="LocationName"
+                  SelectedValuePath="LocationId"
+                  SelectedValue="{Binding Booking.StartLocation}" />
         <TextBlock Text="Select your Ending Location" />
         <ComboBox Style="{StaticResource ComboBoxStyle}"
-                  ItemsSource="{Binding}" />
+                  SelectedIndex="1"
+                  ItemsSource="{Binding Locations}"
+                  DisplayMemberPath="LocationName"
+                  SelectedValuePath="LocationId"
+                  SelectedValue="{Binding Booking.EndLocation}" />
+
+        <TextBlock Text="Please select Date and Time" />
+
+        <window:WindowsFormsHost Margin="10"
+                                 Name="DatetimePickerElement">
+            <wf:DateTimePicker Format="Time" />
+        </window:WindowsFormsHost>
+        <TextBlock Visibility="Collapsed"
+                   Name="DateTimeHolder" />
         <TextBlock Text="Please select Type of Package" />
-        <ComboBox Style="{StaticResource ComboBoxStyle}"
-                  ItemsSource="{Binding}" />
+        <StackPanel Orientation="Horizontal">
+            <RadioButton Name="Hourly"
+                         IsChecked="True"
+                         Content="{Binding ElementName=Hourly, Path=Name}"
+                         Command="{Binding SelectPackageCommand}"
+                         CommandParameter="{Binding ElementName=Hourly, Path=Name}" />
+            <RadioButton Name="Nightlife"
+                         Content="{Binding ElementName=Nightlife, Path=Name}"
+                         Command="{Binding SelectPackageCommand}"
+                         CommandParameter="{Binding ElementName=Nightlife, Path=Name}" />
+            <RadioButton Name="Wedding"
+                         Content="{Binding ElementName=Wedding, Path=Name}"
+                         Command="{Binding SelectPackageCommand}"
+                         CommandParameter="{Binding ElementName=Wedding, Path=Name}" />
+            <RadioButton Name="Wellness"
+                         Content="{Binding ElementName=Wellness, Path=Name}"
+                         Command="{Binding SelectPackageCommand}"
+                         CommandParameter="{Binding ElementName=Wellness, Path=Name}" />
+        </StackPanel>
         <TextBlock Text="Enter number of Hours" />
         <TextBox Style="{StaticResource TextBoxStyle}"
-                 Text="test" />
+                 Text="{Binding Booking.Hours}" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Final Amount" />
-            <TextBlock Grid.Column="0" Style="{StaticResource TextBlockStyle}"
-                       Text="Rs. 200" />
-            <TextBlock Grid.Column="1"
-                       Text="Total Amount with Tax" />
-            <TextBlock Grid.Column="1"
-                       Style="{StaticResource TextBlockStyle}"
-                       Text="Rs. 200" />
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Text="Amount" />
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Rs. " />
+                    <TextBlock Text="{Binding Amount}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Text="Total Amount with Tax" />
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Rs. " />
+                    <TextBlock Text="{Binding TotalAmountWithTax}" />
+                </StackPanel>
+            </Grid>
         </Grid>
         <Button Content="Submit"
-                Margin="25" />
+                Margin="25"
+                Command="{Binding SubmitCommand}"
+                CommandParameter="{Binding ElementName=DateTimeHolder, Path=Text}"/>
     </StackPanel>
 </Window>
