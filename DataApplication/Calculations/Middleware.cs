@@ -77,5 +77,12 @@ namespace DataApplication.Calculations
 
             return updatedPrice;
         }
+
+        public static List<Car> GetAvailableCars()
+        {
+            var dbMgr = new DatabaseManager();
+            List<Car> carList = dbMgr.GetUniqueBookingsForCars();
+            return carList;
+        }
     }
 }

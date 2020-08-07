@@ -398,5 +398,88 @@ namespace DataApplication.Database
 
             return count;
         }
+
+        public Car GetCarUsingCarId(int carId)
+        {
+            IList<Car> items = null;
+            Car car = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_carTableName}` where CarId = {carId}";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Car>();
+                    car = items.First();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return car;
+        }
+
+        public List<Car> GetUniqueBookingsForCars()
+        {
+            List<Car> carList = new List<Car>();
+            IEnumerable<Booking> items = null;
+            var currentDateTime = DateTime.Now;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_bookingTableName}` order by Time desc";
+            var allCars = GetCars().ToList();
+            List<int> allCarsBookings = new List<int>();
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Booking>();
+
+                    var result = items.GroupBy(e => e.CarId);
+
+                    foreach (var group in result)
+                    {
+                        var carId = group.Key;
+                        var startTime = group.First().Time;
+                        var hours = group.First().Hours;
+                        var endTime = startTime.AddHours(hours + 6);
+                        int res = DateTime.Compare(currentDateTime, endTime);
+                        allCarsBookings.Add(carId);
+                        if (res >= 0)
+                        {
+                            Car car = GetCarUsingCarId(carId);
+                            carList.Add(car);
+                        }
+                    }
+
+                    foreach (var row in allCars)
+                    {
+                        if (!allCarsBookings.Contains(row.CarId))
+                            carList.Add(row);
+                    }
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return carList;
+        }
+
     }
 }

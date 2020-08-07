@@ -1,4 +1,5 @@
-﻿using DataApplication.Model;
+﻿using DataApplication.Database;
+using DataApplication.Model;
 using System;
 using System.Linq;
 
@@ -32,47 +33,60 @@ namespace DataApplication.Calculations
             return hourlyRate + ((hours - 1) * hourlyRate * (hourlyDiscountPercent / 100));
         }
 
-        public static double CalculateCost(CustomerType customerType, int reservationsCount, double cost)
+        public static double CalculateCost(int customerId, double price)
         {
-            if (customerType.CustomerTypeName.ToLower() == "VIP".ToLower())
+            double updatedPrice = price;
+            var dbMgr = new DatabaseManager();
+
+            var customerType = dbMgr.GetCustomerTypeFromCustomer(customerId);
+            if (customerType != -1)
             {
-                if (Enumerable.Range(2, 6).Contains(reservationsCount))
+                var customerTypeName = dbMgr.GetCustomerTypeName(customerType);
+                if (customerTypeName == "VIP" || customerTypeName == "Planner")
                 {
-                    return cost - (cost * 5 / 100);
-                }
-                if (Enumerable.Range(7, 14).Contains(reservationsCount))
-                {
-                    return cost - (cost * 7.5 / 100);
-                }
-                if (reservationsCount >= 15)
-                {
-                    return cost - (cost * 10 / 100);
+                    int reservationCount = dbMgr.GetCustomerBookingsCountWithinYear(customerId);
+                    if (customerTypeName == "VIP")
+                    {
+                        if (reservationCount >= 2 && reservationCount <= 6)
+                        {
+                            updatedPrice = price - (5/100 * price);
+                        }
+                        else if (reservationCount >= 7 && reservationCount <= 14)
+                        {
+                            updatedPrice = price - (7.5/100 * price);
+                        }
+                        else if (reservationCount >= 15)
+                        {
+                            updatedPrice = price - (10/100 * price);
+                        }
+                    }
+                    else
+                    {
+                        if (reservationCount >= 5 && reservationCount <= 9)
+                        {
+                            updatedPrice = price - (5/100 * price);
+                        }
+                        else if (reservationCount >= 10 && reservationCount <= 14)
+                        {
+                            updatedPrice = price - (10/100 * price);
+                        }
+                        else if (reservationCount >= 15 && reservationCount <= 19)
+                        {
+                            updatedPrice = price - (12.5/100 * price);
+                        }
+                        else if (reservationCount >= 20 && reservationCount <= 24)
+                        {
+                            updatedPrice = price - (15/100 * price);
+                        }
+                        else if (reservationCount >= 25)
+                        {
+                            updatedPrice = price - (25/100 * price);
+                        }
+                    }
                 }
             }
-            if (customerType.CustomerTypeName.ToLower() == "Planner".ToLower())
-            {
-                if (Enumerable.Range(5, 9).Contains(reservationsCount))
-                {
-                    return cost - (cost * 5 / 100);
-                }
-                if (Enumerable.Range(10, 14).Contains(reservationsCount))
-                {
-                    return cost - (cost * 10 / 100);
-                }
-                if (Enumerable.Range(15, 19).Contains(reservationsCount))
-                {
-                    return cost - (cost * 12.5 / 100);
-                }
-                if (Enumerable.Range(20, 24).Contains(reservationsCount))
-                {
-                    return cost - (cost * 15 / 100);
-                }
-                if (reservationsCount >= 25)
-                {
-                    return cost - (cost * 25 / 100);
-                }
-            }
-            return cost;
+
+            return updatedPrice;
         }
 
         public static double CalculatePackagedCost(Booking booking, Car car)
