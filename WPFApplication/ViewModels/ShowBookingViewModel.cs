@@ -3,6 +3,7 @@ using DataApplication.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using WPFApplication.Models;
 
 namespace WPFApplication.ViewModels
 {
@@ -44,9 +45,9 @@ namespace WPFApplication.ViewModels
             }
         }
 
-        private List<Booking> _booking;
+        private List<ShowBooking> _booking;
 
-        public List<Booking> Bookings
+        public List<ShowBooking> Bookings
         {
             get
             {

@@ -52,6 +52,33 @@ namespace DataApplication.Database
             return items;
         }
 
+        public Customer GetCustomer(int customerId)
+        {
+            IList<Customer> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_customerTableName}` WHERE CustomerId = {customerId}";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Customer>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items.FirstOrDefault();
+        }
+
         public bool AddCustomer(Customer customer)
         {
             var result = false;
@@ -360,6 +387,33 @@ namespace DataApplication.Database
             }
 
             return items;
+        }
+
+        public Location GetLocation(int locationId)
+        {
+            IList<Location> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_locationTableName}` WHERE LocationId = {locationId}";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Location>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items.FirstOrDefault();
         }
 
         public bool AddLocation(Location location)
