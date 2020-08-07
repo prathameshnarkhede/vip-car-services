@@ -10,14 +10,23 @@ namespace WPFApplication.ViewModels
     {
         public MainWindowViewModel()
         {
-            var dbMgr = new DatabaseManager();
-            Customers = new ObservableCollection<Customer>(dbMgr.GetCustomers());
+            InitializeData();
 
             RegisterCustomerCommand = new RelayCommand(RegisterCustomer);
 
             BookCarCommand = new RelayCommand(BookCar);
 
             ShowBookingsCommand = new RelayCommand(ShowBooking);
+        }
+
+        public void InitializeData()
+        {
+            var dbMgr = new DatabaseManager();
+            Customers.Clear();
+            foreach (var item in dbMgr.GetCustomers())
+            {
+                Customers.Add(item);
+            }
         }
 
         public ICommand RegisterCustomerCommand { get; set; }
@@ -41,7 +50,7 @@ namespace WPFApplication.ViewModels
             RaisePropertyChanged(nameof(ShowBookingsCommand));
         }
 
-        private ObservableCollection<Customer> _customers;
+        private ObservableCollection<Customer> _customers = new ObservableCollection<Customer>();
         public ObservableCollection<Customer> Customers
         {
             get

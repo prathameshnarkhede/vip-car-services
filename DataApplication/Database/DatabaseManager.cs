@@ -181,6 +181,33 @@ namespace DataApplication.Database
             return items;
         }
 
+        public IEnumerable<Booking> GetCarBookings(Car car)
+        {
+            IList<Booking> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_bookingTableName}` where CarId = {car.CarId}";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Booking>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items;
+        }
+
         public bool AddBooking(Booking booking)
         {
             var result = false;

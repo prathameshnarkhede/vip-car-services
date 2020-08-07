@@ -1,4 +1,5 @@
-﻿using DataApplication.Model;
+﻿using DataApplication.Database;
+using DataApplication.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,12 @@ namespace WPFApplication.ProcessFlows
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.PropertyName.Equals(nameof(ShowBookingViewModel.SelectedCar)))
+            {
+                var dbMgr = new DatabaseManager();
+                var bookings = dbMgr.GetCarBookings((sender as ShowBookingViewModel).SelectedCar);
+                (sender as ShowBookingViewModel).Bookings = bookings;
+            }
         }
     }
 }

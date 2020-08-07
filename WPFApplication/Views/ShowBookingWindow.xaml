@@ -17,6 +17,20 @@
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Text="Bookings" />
-    </Grid>    
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="Bookings" />
+            <ComboBox Grid.Column="1"
+                      Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding Cars}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedCar}" />
+        </Grid>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Bookings}" />
+    </Grid>
 </Window>
