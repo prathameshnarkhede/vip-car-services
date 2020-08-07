@@ -7,9 +7,10 @@
         xmlns:vm="clr-namespace:WPFApplication.ViewModels"
         xmlns:window="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="BookCarWindow"
-        Height="550"
+        Height="600"
         Width="400">
     <Window.DataContext>
         <vm:BookCarViewModel />
@@ -43,16 +44,12 @@
 
         <TextBlock Text="Please select Date and Time" />
 
-        <window:WindowsFormsHost Margin="10"
-                                 Name="DatetimePickerElement">
-            <wf:DateTimePicker Format="Time" />
-        </window:WindowsFormsHost>
-        <TextBlock Visibility="Collapsed"
-                   Name="DateTimeHolder" />
+        <wpfTool:DateTimePicker Margin="10"
+                                Text="{Binding Booking.Time}" />
+
         <TextBlock Text="Please select Type of Package" />
         <StackPanel Orientation="Horizontal">
             <RadioButton Name="Hourly"
-                         IsChecked="True"
                          Content="{Binding ElementName=Hourly, Path=Name}"
                          Command="{Binding SelectPackageCommand}"
                          CommandParameter="{Binding ElementName=Hourly, Path=Name}" />
@@ -72,6 +69,9 @@
         <TextBlock Text="Enter number of Hours" />
         <TextBox Style="{StaticResource TextBoxStyle}"
                  Text="{Binding Booking.Hours}" />
+        <Button Content="Recalculate Cost"
+                Margin="25"
+                Command="{Binding UpdateCostCommand}" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -106,7 +106,6 @@
         </Grid>
         <Button Content="Submit"
                 Margin="25"
-                Command="{Binding SubmitCommand}"
-                CommandParameter="{Binding ElementName=DateTimeHolder, Path=Text}"/>
+                Command="{Binding SubmitCommand}" />
     </StackPanel>
 </Window>

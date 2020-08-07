@@ -1,4 +1,5 @@
-﻿using DataApplication.Database;
+﻿using DataApplication.Calculations;
+using DataApplication.Database;
 using DataApplication.Model;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,12 @@ namespace WPFApplication.ProcessFlows
 {
    public class BookCarProcessFlow
     {
+        private readonly Customer _customer;
+
         public BookCarProcessFlow(Customer customer)
         {
+            this._customer = customer;
+
             var window = new BookCarWindow();
             var vm = (BookCarViewModel)window.DataContext;
             vm.PropertyChanged += Vm_PropertyChanged;
@@ -23,9 +28,10 @@ namespace WPFApplication.ProcessFlows
 
         private async void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            var vm = sender as BookCarViewModel;
             if (e.PropertyName.Equals(nameof(BookCarViewModel.SubmitCommand)))
             {
-                var vm = sender as BookCarViewModel;
+                vm.Booking.CustId = _customer.CustomerId;
 
                 var result = await BookCar(vm.Booking);
 
@@ -33,6 +39,17 @@ namespace WPFApplication.ProcessFlows
                 {
                     MessageBox.Show("Customer added Successfully.", "Success");
                 }
+            }
+            if (e.PropertyName.Equals(nameof(BookCarViewModel.UpdateCostCommand)))
+            {
+                var dbMgr = new DatabaseManager();
+                var car = dbMgr.GetCar(vm.Booking.CarId);
+
+                var packagedCost = Infrastructure.CalculatePackagedCost(vm.Booking, car);
+
+                vm.Amount = Middleware.CalculatePriceAfterDiscount(_customer.CustomerId, packagedCost);
+
+                vm.TotalAmountWithTax = Infrastructure.CalculateWithTax(vm.Amount);
             }
         }
 

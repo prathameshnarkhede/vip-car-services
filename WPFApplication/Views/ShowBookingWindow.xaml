@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="AddCarWindow"
         Height="450"
-        Width="400">
+        Width="800">
     <Window.DataContext>
         <vm:ShowBookingViewModel />
     </Window.DataContext>
@@ -31,6 +31,7 @@
                       SelectedItem="{Binding SelectedCar}" />
         </Grid>
         <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Bookings}" />
+                  ItemsSource="{Binding Bookings}"
+                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" />
     </Grid>
 </Window>

@@ -259,6 +259,33 @@ namespace DataApplication.Database
             return items;
         }
 
+        public Car GetCar(int carId)
+        {
+            IList<Car> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_carTableName}` where CarId = {carId}";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Car>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items.FirstOrDefault();
+        }
+
         public bool AddCar(Car car)
         {
             var result = false;

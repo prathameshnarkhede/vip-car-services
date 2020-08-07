@@ -26,7 +26,7 @@ namespace WPFApplication.ProcessFlows
             {
                 var dbMgr = new DatabaseManager();
                 var bookings = dbMgr.GetCarBookings((sender as ShowBookingViewModel).SelectedCar);
-                (sender as ShowBookingViewModel).Bookings = bookings;
+                (sender as ShowBookingViewModel).Bookings = bookings.ToList();
             }
         }
     }

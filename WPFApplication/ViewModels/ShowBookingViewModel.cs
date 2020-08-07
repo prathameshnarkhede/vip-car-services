@@ -1,6 +1,7 @@
 ﻿using DataApplication.Database;
 using DataApplication.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace WPFApplication.ViewModels
@@ -43,9 +44,9 @@ namespace WPFApplication.ViewModels
             }
         }
 
-        private ObservableCollection<Booking> _booking = new ObservableCollection<Booking>();
+        private List<Booking> _booking;
 
-        public ObservableCollection<Booking> Bookings
+        public List<Booking> Bookings
         {
             get
             {

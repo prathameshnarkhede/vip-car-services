@@ -23,8 +23,6 @@ namespace WPFApplication.Views
         public BookCarWindow()
         {
             InitializeComponent();
-
-            this.DateTimeHolder.Text = ((DateTimePicker)this.DatetimePickerElement.Child).Value.ToString();
         }
     }
 }

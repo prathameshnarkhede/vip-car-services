@@ -1,5 +1,6 @@
 ﻿using DataApplication.Database;
 using DataApplication.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -9,12 +10,20 @@ namespace WPFApplication.ViewModels
     {
         public ICommand SelectPackageCommand { get; set; }
 
+        public ICommand UpdateCostCommand { get; set; }
+
         public BookCarViewModel()
         {
             var dbMgr = new DatabaseManager();
             Cars = new ObservableCollection<Car>(dbMgr.GetCars());
             Locations = new ObservableCollection<Location>(dbMgr.GetLocations());
             SelectPackageCommand = new RelayCommand(SelectPackage);
+            UpdateCostCommand = new RelayCommand(CalculateCost);
+        }
+
+        private void CalculateCost(object obj)
+        {
+            RaisePropertyChanged(nameof(UpdateCostCommand));
         }
 
         private void SelectPackage(object obj)
@@ -82,7 +91,7 @@ namespace WPFApplication.ViewModels
             }
         }
 
-        private Booking _booking = new Booking { Hours = 0 };
+        private Booking _booking = new Booking { Hours = 0, Time = DateTime.Now, Type = "Hourly" };
 
         public Booking Booking
         {
@@ -99,7 +108,6 @@ namespace WPFApplication.ViewModels
 
         public override void Submit(object obj)
         {
-            Booking.Time = System.DateTime.Parse(obj as string);
             RaisePropertyChanged(nameof(SubmitCommand));
         }
     }
