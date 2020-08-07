@@ -121,40 +121,29 @@ namespace DataApplication.Calculations
             return price;
         }
 
-        public static IEnumerable<Car> GetAvailableCars()
+        public static bool CheckCarAvailability(int carId, DateTime startTime)
         {
-            var allCarsBookings = new List<int>();
-            var carList = new List<Car>();
-            var currentDateTime = DateTime.Now;
+            var isAvailable = false;
 
             var dbMgr = new DatabaseManager();
-            var allCars = dbMgr.GetCars();
 
-            var items = dbMgr.GetDescOrderedBookings();
-
-            var result = items.GroupBy(e => e.CarId);
-
-            foreach (var group in result)
+            var carBookings = dbMgr.GetDescOrderedBookings(carId);
+            if (carBookings == null || carBookings.ToList().Count == 0)
+                isAvailable = true;
+            else
             {
-                var carId = group.Key;
-                var startTime = group.First().Time;
-                var hours = group.First().Hours;
-                var endTime = startTime.AddHours(hours + 6);
-                int res = DateTime.Compare(currentDateTime, endTime);
-                allCarsBookings.Add(carId);
+                var topCarBooking = carBookings.ToList().First();
+                var bookingStartTime = topCarBooking.Time;
+                var bookingHours = topCarBooking.Hours;
+                var bookingEndTime = bookingStartTime.AddHours(bookingHours + 6);
+                int res = DateTime.Compare(startTime, bookingEndTime);
                 if (res >= 0)
-                {
-                    var car = dbMgr.GetCar(carId);
-                    carList.Add(car);
-                }
+                    isAvailable = true;
+                else
+                    isAvailable = false;
             }
 
-            foreach (var row in allCars)
-            {
-                if (!allCarsBookings.Contains(row.CarId))
-                    carList.Add(row);
-            }
-            return carList;
+            return isAvailable;
         }
     }
 }

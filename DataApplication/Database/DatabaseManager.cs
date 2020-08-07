@@ -478,11 +478,11 @@ namespace DataApplication.Database
             return count;
         }
 
-        public IEnumerable<Booking> GetDescOrderedBookings()
+        public IEnumerable<Booking> GetDescOrderedBookings(int carId)
         {
             IEnumerable<Booking> items = null;
             _connection.Open();
-            var query = $"SELECT * FROM `{_bookingTableName}` order by Time desc";
+            var query = $"SELECT * FROM `{_bookingTableName}` order by Time desc where CarId={carId}";
             try
             {
                 using (var command = new MySqlCommand(query, _connection))
