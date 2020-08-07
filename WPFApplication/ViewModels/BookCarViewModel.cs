@@ -22,7 +22,8 @@ namespace WPFApplication.ViewModels
         public void InitializeData()
         {
             var dbMgr = new DatabaseManager();
-            Cars = new ObservableCollection<Car>(DataApplication.Calculations.Infrastructure.GetAvailableCars());
+            //Cars = new ObservableCollection<Car>(DataApplication.Calculations.Infrastructure.GetAvailableCars());
+            Cars = new ObservableCollection<Car>(dbMgr.GetCars());
             Locations = new ObservableCollection<Location>(dbMgr.GetLocations());
         }
 
