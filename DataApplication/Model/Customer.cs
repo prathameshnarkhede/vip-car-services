@@ -12,7 +12,7 @@ namespace DataApplication.Model
 
         public string Address { get; set; }
 
-        public string TVAnummer { get; set; }
+        public string TVAnumber { get; set; }
 
         public int BookingCount { get; set; }
     }

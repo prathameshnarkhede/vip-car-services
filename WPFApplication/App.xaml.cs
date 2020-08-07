@@ -15,6 +15,7 @@ namespace WPFApplication
     {
         public App()
         {
+            //DataApplication.Calculations.Infrastructure.CalculateTotalFromHourlyRate(30, DateTime.Now, 5);
             new ProcessFlow();
         }
     }

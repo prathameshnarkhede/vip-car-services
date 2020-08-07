@@ -126,7 +126,34 @@ namespace DataApplication.Database
             return result;
         }
 
-        public IEnumerable<Booking> GetBookings(int customerId)
+        public IEnumerable<Booking> GetBookings()
+        {
+            IList<Booking> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_bookingTableName}`";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Booking>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return items;
+        }
+
+        public IEnumerable<Booking> GetCustomerBookings(int customerId)
         {
             IList<Booking> items = null;
             _connection.Open();

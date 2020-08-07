@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:WPFApplication.Views"
         xmlns:vm="clr-namespace:WPFApplication.ViewModels"
         mc:Ignorable="d"
-        Title="RegisterCustomerWindow" Height="400" Width="400">
+        Title="RegisterCustomerWindow"
+        Height="400"
+        Width="400">
     <Window.DataContext>
         <vm:RegisterCustomerViewModel />
     </Window.DataContext>
@@ -27,12 +29,12 @@
         <TextBlock Text="Address" />
         <TextBox Style="{StaticResource TextBoxStyle}"
                  Text="{Binding Customer.Address}" />
-        <TextBlock Text="TVAnummer" />
+        <TextBlock Text="TVA Number" />
         <TextBox Style="{StaticResource TextBoxStyle}"
-                 Text="{Binding Customer.TVAnummer}" />
-        
+                 Text="{Binding Customer.TVAnumber}" />
+
         <Button Content="Submit"
-                Margin="25" 
-                Command="{Binding SubmitCommand}"/>
+                Margin="25"
+                Command="{Binding SubmitCommand}" />
     </StackPanel>
 </Window>
