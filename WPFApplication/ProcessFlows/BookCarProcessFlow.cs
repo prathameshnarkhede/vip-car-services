@@ -28,6 +28,7 @@ namespace WPFApplication.ProcessFlows
 
         private async void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            var dbMgr = new DatabaseManager();
             var vm = sender as BookCarViewModel;
             if (e.PropertyName.Equals(nameof(BookCarViewModel.SubmitCommand)))
             {
@@ -37,17 +38,15 @@ namespace WPFApplication.ProcessFlows
 
                 if (result)
                 {
-                    MessageBox.Show("Customer added Successfully.", "Success");
+                    MessageBox.Show("Car booked Successfully.", "Success");
+
                 }
             }
             if (e.PropertyName.Equals(nameof(BookCarViewModel.UpdateCostCommand)))
             {
-                var dbMgr = new DatabaseManager();
                 var car = dbMgr.GetCar(vm.Booking.CarId);
 
-                var packagedCost = Infrastructure.CalculatePackagedCost(vm.Booking, car);
-
-                vm.Amount = Middleware.CalculatePriceAfterDiscount(_customer.CustomerId, packagedCost);
+                vm.Amount = Infrastructure.CalculateCost(_customer.CustomerId, vm.Booking, car);
 
                 vm.TotalAmountWithTax = Infrastructure.CalculateWithTax(vm.Amount);
             }

@@ -15,7 +15,7 @@ namespace WPFApplication.ViewModels
         public BookCarViewModel()
         {
             var dbMgr = new DatabaseManager();
-            Cars = new ObservableCollection<Car>(dbMgr.GetCars());
+            Cars = new ObservableCollection<Car>(DataApplication.Calculations.Infrastructure.GetAvailableCars());
             Locations = new ObservableCollection<Location>(dbMgr.GetLocations());
             SelectPackageCommand = new RelayCommand(SelectPackage);
             UpdateCostCommand = new RelayCommand(CalculateCost);

@@ -10,12 +10,12 @@ namespace DataApplication.Model
 
         public string Name { get; set; }
 
-        public int HourRate { get; set; }
+        public double HourRate { get; set; }
 
-        public int NightlifeRate { get; set; }
+        public double NightlifeRate { get; set; }
 
-        public int WeddingRate { get; set; }
+        public double WeddingRate { get; set; }
 
-        public int WellnessRate { get; set; }
+        public double WellnessRate { get; set; }
     }
 }

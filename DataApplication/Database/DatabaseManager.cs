@@ -76,6 +76,30 @@ namespace DataApplication.Database
             return result;
         }
 
+        public bool UpdateCustomerBookingCount(Booking booking)
+        {
+            var result = false;
+            _connection.Open();
+            var query = "UPDATE table_name SET field1 = new-value1, field2 = new-value2";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var rowsAffected = command.ExecuteNonQuery();
+                    result = rowsAffected != 0;
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return result;
+        }
+
         public IEnumerable<CustomerType> GetCustomerTypes()
         {
             IList<CustomerType> items = null;
@@ -452,5 +476,32 @@ namespace DataApplication.Database
 
             return count;
         }
+
+        public IEnumerable<Booking> GetDescOrderedBookings()
+        {
+            IEnumerable<Booking> items = null;
+            _connection.Open();
+            var query = $"SELECT * FROM `{_bookingTableName}` order by Time desc";
+            try
+            {
+                using (var command = new MySqlCommand(query, _connection))
+                {
+                    var da = new MySqlDataAdapter(command);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    items = dt.ConvertDataTable<Booking>();
+                }
+            }
+            catch (MySqlException)
+            {
+                Console.WriteLine("Database Conenction Error!");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return items;
+        }
+
     }
 }
