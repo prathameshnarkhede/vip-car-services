@@ -1,9 +1,4 @@
-﻿using DataApplication.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace WPFApplication.Models
 {
@@ -38,5 +33,10 @@ namespace WPFApplication.Models
 
         [ColumnName("Price with Tax")]
         public double PriceWithTax { get; set; }
+    }
+    public class ColumnNameAttribute : Attribute
+    {
+        public ColumnNameAttribute(string Name) { this.Name = Name; }
+        public string Name { get; set; }
     }
 }

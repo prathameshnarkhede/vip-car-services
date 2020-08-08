@@ -5,12 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFApplication.Views"
         xmlns:vm="clr-namespace:WPFApplication.ViewModels"
-        xmlns:window="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
-        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="BookCarWindow"
-        Height="600"
+        Height="525"
         Width="400">
     <Window.DataContext>
         <vm:BookCarViewModel />
@@ -36,7 +34,7 @@
                   SelectedValue="{Binding Booking.StartLocation}" />
         <TextBlock Text="Select your Ending Location" />
         <ComboBox Style="{StaticResource ComboBoxStyle}"
-                  SelectedIndex="1"
+                  SelectedIndex="0"
                   ItemsSource="{Binding Locations}"
                   DisplayMemberPath="LocationName"
                   SelectedValuePath="LocationId"
@@ -50,6 +48,7 @@
         <TextBlock Text="Please select Type of Package" />
         <StackPanel Orientation="Horizontal">
             <RadioButton Name="Hourly"
+                         IsChecked="True"
                          Content="{Binding ElementName=Hourly, Path=Name}"
                          Command="{Binding SelectPackageCommand}"
                          CommandParameter="{Binding ElementName=Hourly, Path=Name}" />
@@ -66,12 +65,18 @@
                          Command="{Binding SelectPackageCommand}"
                          CommandParameter="{Binding ElementName=Wellness, Path=Name}" />
         </StackPanel>
-        <TextBlock Text="Enter number of Hours" />
-        <TextBox Style="{StaticResource TextBoxStyle}"
-                 Text="{Binding Booking.Hours}" />
-        <Button Content="Recalculate Cost"
-                Margin="25"
-                Command="{Binding UpdateCostCommand}" />
+        <StackPanel Visibility="{Binding ElementName=Hourly, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Enter number of Hours" />
+            <wpfTool:IntegerUpDown DisplayDefaultValueOnEmptyText="True"
+                                   Minimum="0"
+                                   AllowTextInput="False"
+                                   Name="HoursTextBox"
+                                   Text="{Binding Hours, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="10"
+                                   Height="25"
+                                   VerticalContentAlignment="Center" />
+        </StackPanel>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -96,6 +101,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
+                           Name="AmountTextBlock"
                            Text="Total Amount with Tax" />
                 <StackPanel Grid.Row="1"
                             Orientation="Horizontal">
@@ -106,6 +112,23 @@
         </Grid>
         <Button Content="Submit"
                 Margin="25"
-                Command="{Binding SubmitCommand}" />
+                Command="{Binding SubmitCommand}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Amount}"
+                                     Value="0">
+                        <Setter Property="IsEnabled"
+                                    Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Booking.EndLocation}"
+                                     Value="0">
+                            <Setter Property="IsEnabled"
+                                    Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </StackPanel>
 </Window>

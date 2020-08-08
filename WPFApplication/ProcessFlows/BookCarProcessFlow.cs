@@ -62,12 +62,17 @@ namespace WPFApplication.ProcessFlows
         {
             if(!Infrastructure.CheckCarAvailability(booking.CarId, booking.Time, booking.Hours))
             {
-                MessageBox.Show("Selected car is Not available for selected time");
+                MessageBox.Show($"{new DatabaseManager().GetCar(booking.CarId).Name} car is Not available at selected time");
                 return false;
             }
-            if(!Infrastructure.IsInArrangement(booking))
+            if (new string[] { "Nightlife", "Wedding", "Wellness" }.Contains(booking.Type) && booking.Price is 0)
             {
-                MessageBox.Show("Selcted arrangement is not available to start in selected time");
+                MessageBox.Show($"{booking.Type} arrangement is not available for {new DatabaseManager().GetCar(booking.CarId).Name}");
+                return false;
+            }
+            if (!Infrastructure.IsInArrangement(booking))
+            {
+                MessageBox.Show($"{booking.Type} arrangement is not available at selected time");
                 return false;
             }
             Infrastructure.PopulateTimings(booking);

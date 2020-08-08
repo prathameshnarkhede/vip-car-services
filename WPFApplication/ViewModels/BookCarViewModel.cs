@@ -35,7 +35,23 @@ namespace WPFApplication.ViewModels
         private void SelectPackage(object obj)
         {
             Booking.Type = obj as string;
+            UpdateCostCommand.Execute(null);
         }
+
+        public int Hours
+        {
+            get
+            {
+                return Booking.Hours;
+            }
+            set
+            {
+                Booking.Hours = value;
+                RaisePropertyChanged(nameof(Hours));
+                UpdateCostCommand.Execute(null);
+            }
+        }
+
 
         public double Amount
         {

@@ -38,10 +38,12 @@ namespace WPFApplication.ViewModels
     public class RelayCommand : ICommand
     {
         private Action<object> _execute;
+        private readonly bool _canExecute;
 
-        public RelayCommand(Action<object> execute)
+        public RelayCommand(Action<object> execute, bool canExecute = true)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            this._canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged
@@ -52,7 +54,7 @@ namespace WPFApplication.ViewModels
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _canExecute;
         }
 
         public void Execute(object parameter)

@@ -17,7 +17,7 @@ namespace WPFApplication.Views
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             var desc = e.PropertyDescriptor as PropertyDescriptor;
-            if (desc.Attributes[typeof(DataApplication.Model.ColumnNameAttribute)] is DataApplication.Model.ColumnNameAttribute att)
+            if (desc.Attributes[typeof(Models.ColumnNameAttribute)] is Models.ColumnNameAttribute att)
             {
                 e.Column.Header = att.Name;
             }
