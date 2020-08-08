@@ -38,9 +38,6 @@ namespace WPFApplication.ProcessFlows
         {
             return await Task.Run(() =>
             {
-                // Wait to demonstrate Asynchronous behaviour of WPF.
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-
                 var dbMgr = new DatabaseManager();
                 return dbMgr.AddCustomer(customer);
             });
