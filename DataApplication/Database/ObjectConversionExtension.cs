@@ -29,7 +29,12 @@ namespace DataApplication.Database
                 foreach (PropertyInfo pro in temp.GetProperties())
                 {
                     if (pro.Name == column.ColumnName)
-                        pro.SetValue(obj, dr[column.ColumnName], null);
+                    {
+                        if (dr[column.ColumnName] is DBNull nullValue)
+                            pro.SetValue(obj, null, null);
+                        else
+                            pro.SetValue(obj, dr[column.ColumnName], null);
+                    }
                     else
                         continue;
                 }
@@ -58,7 +63,7 @@ namespace DataApplication.Database
                 s1.Append(info.Current.Name.ToString());
 
                 s2.Append("'");
-                if(info.Current.PropertyType == typeof(DateTime))
+                if (info.Current.PropertyType == typeof(DateTime))
                     s2.Append(((DateTime)info.Current.GetValue(obj)).ToString("yyyy-MM-dd HH:mm:ss"));
                 else
                 {

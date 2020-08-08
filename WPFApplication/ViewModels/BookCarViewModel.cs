@@ -38,6 +38,22 @@ namespace WPFApplication.ViewModels
             UpdateCostCommand.Execute(null);
         }
 
+        private bool _isWorkerBusy = true;
+
+        public bool IsWorkerAvailable
+        {
+            get
+            {
+                return _isWorkerBusy;
+            }
+            set
+            {
+                _isWorkerBusy = value;
+                RaisePropertyChanged(nameof(IsWorkerAvailable));
+            }
+        }
+
+
         public int Hours
         {
             get

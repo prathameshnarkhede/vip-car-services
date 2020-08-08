@@ -33,20 +33,26 @@ namespace WPFApplication.ProcessFlows
             var vm = sender as BookCarViewModel;
             if (e.PropertyName.Equals(nameof(BookCarViewModel.SubmitCommand)))
             {
+                vm.IsWorkerAvailable = false;
                 vm.Booking.CustId = _customer.CustomerId;
 
                 var isValid = ValidateBookingData(vm.Booking);
                 if (!isValid)
+                {
+                    vm.IsWorkerAvailable = true;
                     return;
+                }
+
                 var result = await BookCar(vm.Booking);
 
                 if (result)
                 {
                     MessageBox.Show("Car booked Successfully.", "Success");
                     dbMgr.UpdateCustomerBookingCount(_customer.CustomerId);
-                    vm.InitializeData();
                     window.Close();
+                    return;
                 }
+                vm.IsWorkerAvailable = true;
             }
             if (e.PropertyName.Equals(nameof(BookCarViewModel.UpdateCostCommand)))
             {
