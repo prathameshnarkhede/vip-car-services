@@ -60,7 +60,7 @@ namespace WPFApplication.ProcessFlows
 
         private bool ValidateBookingData(Booking booking)
         {
-            if(!Infrastructure.CheckCarAvailability(booking.CarId, booking.Time))
+            if(!Infrastructure.CheckCarAvailability(booking.CarId, booking.Time, booking.Hours))
             {
                 MessageBox.Show("Selected car is Not available for selected time");
                 return false;

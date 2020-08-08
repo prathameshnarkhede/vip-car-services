@@ -127,29 +127,34 @@ namespace DataApplication.Calculations
             return price;
         }
 
-        public static bool CheckCarAvailability(int carId, DateTime startTime)
+        public static bool CheckCarAvailability(int carId, DateTime startTime, int hours)
         {
-            var isAvailable = false;
-
+            var endTime = startTime.AddHours(hours + 6);
             var dbMgr = new DatabaseManager();
 
             var carBookings = dbMgr.GetDescOrderedBookings(carId);
             if (carBookings == null || carBookings.ToList().Count == 0)
-                isAvailable = true;
+                return true;
             else
             {
-                var topCarBooking = carBookings.ToList().First();
-                var bookingStartTime = topCarBooking.Time;
-                var bookingHours = topCarBooking.Hours;
-                var bookingEndTime = bookingStartTime.AddHours(bookingHours + 6);
-                int res = DateTime.Compare(startTime, bookingEndTime);
-                if (res >= 0)
-                    isAvailable = true;
-                else
-                    isAvailable = false;
+                var carBookingsList = carBookings.ToList();
+                foreach (var booking in carBookingsList)
+                {
+                    var bookingStartTime = booking.Time;
+                    var bookingHours = booking.Hours;
+                    var bookingEndTime = bookingStartTime.AddHours(bookingHours + 6);
+                    if (DateTime.Compare(startTime,bookingEndTime) >= 0 || DateTime.Compare(endTime,bookingStartTime) <= 0)
+                    {
+
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
 
-            return isAvailable;
+            return true;
         }
 
         public static Booking PopulateTimings(Booking booking)
